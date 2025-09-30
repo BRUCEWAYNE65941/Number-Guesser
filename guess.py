@@ -8,3 +8,6 @@ while guess != number:
    
     if guess < number:
         print("Too low!")
+    elif guess > number:
+        print("Too high!")
+print("Congratulations! You guessed the number!")
