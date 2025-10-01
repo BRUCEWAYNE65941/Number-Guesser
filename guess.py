@@ -1,27 +1,45 @@
 import random
 
-def show_instructions():
+def show_instructions(min_num, max_num, max_guesses):
     print("Welcome to the Number Guessing Game!")
     print("------------------------------------")
     print("Rules:")
-    print("- Guess a number between 1 and 100.")
+    print(f"- Guess a number between {min_num} and {max_num}.")
+    print(f"- You have up to {max_guesses} guesses.")
     print("- You'll get feedback if your guess is too high or too low.")
     print("- After 3 guesses, you'll receive a hint about whether the number is even or odd.")
     print("- Try to guess the number in as few tries as possible!")
     print("------------------------------------\n")
 
+def choose_difficulty():
+    print("Choose difficulty: 1) Easy (1-50, 10 guesses), 2) Medium (1-100, 7 guesses), 3) Hard (1-200, 5 guesses)")
+    while True:
+        try:
+            choice = int(input("Enter 1, 2, or 3: "))
+            if choice == 1:
+                return 1, 50, 10
+            elif choice == 2:
+                return 1, 100, 7
+            elif choice == 3:
+                return 1, 200, 5
+            else:
+                print("Please choose 1, 2, or 3!")
+        except ValueError:
+            print("Enter a valid number!")
+
 def play_game():
-    show_instructions()
-    number = random.randint(1, 100)
+    min_num, max_num, max_guesses = choose_difficulty()
+    show_instructions(min_num, max_num, max_guesses)
+    number = random.randint(min_num, max_num)
     guess = None
     guess_count = 0
 
-    while guess != number:
+    while guess != number and guess_count < max_guesses:
         try:
-            guess = int(input("Guess a number between 1 and 100: "))
+            guess = int(input(f"Guess a number between {min_num} and {max_num}: "))
             guess_count += 1
-            if guess < 1 or guess > 100:
-                print("Please enter a number between 1 and 100!")
+            if guess < min_num or guess > max_num:
+                print(f"Please enter a number between {min_num} and {max_num}!")
             elif guess < number:
                 print("Too low!")
                 if guess_count == 3:
@@ -32,7 +50,10 @@ def play_game():
                     print(f"Hint: The number is {'even' if number % 2 == 0 else 'odd'}.")
         except ValueError:
             print("Please enter a valid integer!")
-    print(f"Congratulations! You guessed the number in {guess_count} tries!")
+    if guess == number:
+        print(f"Congratulations! You guessed the number in {guess_count} tries!")
+    else:
+        print(f"Game over! The number was {number}.")
     return guess_count
 
 while True:
